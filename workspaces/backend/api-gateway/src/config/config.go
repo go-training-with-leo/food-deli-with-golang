@@ -47,7 +47,5 @@ func loadConfig(path string) (config Config, err error) {
 		log.Fatal("Unable to decode into struct.\n", err)
 	}
 
-	fmt.Println("Loaded env vars from .env file!")
-
 	return
 }

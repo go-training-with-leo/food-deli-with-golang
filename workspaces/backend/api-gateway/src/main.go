@@ -1,13 +1,12 @@
 package main
 
 import (
-	"api-gateway/src/database"
+	"api-gateway/src/pkgs/gorm"
+	"fmt"
 )
 
-func init() {
-
-}
-
 func main() {
-	database.CreateDbInstance()
+	gorm.CreateDbInstance()
+
+	fmt.Println(("Loaded api-gateway!"))
 }
