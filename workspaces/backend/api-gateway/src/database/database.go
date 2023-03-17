@@ -3,14 +3,21 @@ package database
 import (
 	"fmt"
 	"log"
-	"os"
+
+	"api-gateway/src/config"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 func CreateDbInstance() *gorm.DB {
-	dsn := os.Getenv("DB_DSN")
+	username := config.App.DatabaseUsername
+	password := config.App.DatabasePassword
+	host := config.App.DatabaseHost
+	port := config.App.DatabasePort
+	name := config.App.DatabaseName
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable", host, username, password, name, port)
+
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {
