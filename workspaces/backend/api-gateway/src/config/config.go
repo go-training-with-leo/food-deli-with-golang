@@ -7,9 +7,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-var (
-	App Config
-)
+var App Config
 
 type Config struct {
 	DatabaseType     string `mapstructure:"DB_TYPE"`

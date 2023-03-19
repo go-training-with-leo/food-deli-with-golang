@@ -1,4 +1,4 @@
-package gorm
+package database
 
 import (
 	"fmt"
@@ -10,7 +10,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func CreateDbInstance() *gorm.DB {
+func CreateInstance() *gorm.DB {
 	username := config.App.DatabaseUsername
 	password := config.App.DatabasePassword
 	host := config.App.DatabaseHost
