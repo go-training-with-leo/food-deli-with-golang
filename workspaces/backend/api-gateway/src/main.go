@@ -37,7 +37,6 @@ func (RestaurantUpdate) TableName() string {
 
 func main() {
 	db := database.CreateInstance()
-	db.AutoMigrate(&Restaurant{})
 
 	if err := runService(db); err != nil {
 		log.Fatal("Cannot start the server.\n", err)
