@@ -24,12 +24,12 @@ func init() {
 	LoadedConfAppFromTheEnv, err := loadConfig(".")
 
 	if err != nil {
-		log.Fatal("Cannot load config.\n", err)
+		log.Fatal("cannot load config.\n", err)
 	}
 
 	App = LoadedConfAppFromTheEnv
 
-	fmt.Println("Loaded config!")
+	fmt.Println("loaded config!")
 }
 
 func loadConfig(path string) (config Config, err error) {
@@ -38,11 +38,11 @@ func loadConfig(path string) (config Config, err error) {
 	viper.AutomaticEnv()
 
 	if err := viper.ReadInConfig(); err != nil {
-		log.Fatal("Cannot load .env file.\n", err)
+		log.Fatal("cannot load .env file.\n", err)
 	}
 
 	if err := viper.Unmarshal(&config); err != nil {
-		log.Fatal("Unable to decode into struct.\n", err)
+		log.Fatal("unable to decode into struct.\n", err)
 	}
 
 	return

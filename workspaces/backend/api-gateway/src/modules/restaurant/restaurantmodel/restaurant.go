@@ -1,6 +1,11 @@
 package restaurantmodel
 
-import "github.com/google/uuid"
+import (
+	"errors"
+	"strings"
+
+	"github.com/google/uuid"
+)
 
 type Restaurant struct {
 	Id      uuid.UUID `json:"id" gorm:"column:id;type:uuid;primary_key;default:gen_random_uuid();"`
@@ -32,4 +37,14 @@ type RestaurantCreate struct {
 
 func (RestaurantCreate) TableName() string {
 	return Restaurant{}.TableName()
+}
+
+func (res *RestaurantCreate) Validate() error {
+	res.Name = strings.TrimSpace(res.Name)
+
+	if len(res.Name) == 0 {
+		return errors.New("restaurant name can not be blank")
+	}
+
+	return nil
 }

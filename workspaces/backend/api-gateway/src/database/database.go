@@ -21,10 +21,10 @@ func CreateInstance() *gorm.DB {
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {
-		log.Fatal("Cannot connect to DB: ", err)
+		log.Fatal("cannot connect to DB: ", err)
 	}
 
-	fmt.Println("Connected to PostgresSQL!")
+	fmt.Println("connected to PostgresSQL!")
 
 	return db
 }

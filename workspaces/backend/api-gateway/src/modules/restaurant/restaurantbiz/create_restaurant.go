@@ -3,8 +3,6 @@ package restaurantbiz
 import (
 	"api-gateway/src/modules/restaurant/restaurantmodel"
 	"context"
-	"errors"
-	"fmt"
 )
 
 type CreateRestaurantStore interface {
@@ -20,9 +18,8 @@ func NewCreateRestaurantBiz(store CreateRestaurantStore) *createRestaurantBiz {
 }
 
 func (biz *createRestaurantBiz) CreateRestaurant(ctx context.Context, data *restaurantmodel.RestaurantCreate) error {
-	fmt.Println(data.Name)
-	if data.Name == "" {
-		return errors.New("restaurant name can not be blank")
+	if err := data.Validate(); err != nil {
+		return err
 	}
 
 	err := biz.store.Create(ctx, data)

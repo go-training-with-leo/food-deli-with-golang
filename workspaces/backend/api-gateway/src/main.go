@@ -1,6 +1,7 @@
 package main
 
 import (
+	"api-gateway/src/component"
 	"api-gateway/src/database"
 	"api-gateway/src/modules/restaurant/restauranttransport/ginrestaurant"
 
@@ -39,7 +40,7 @@ func main() {
 	db := database.CreateInstance()
 
 	if err := runService(db); err != nil {
-		log.Fatal("Cannot start the server.\n", err)
+		log.Fatal("can not start the server.\n", err)
 	}
 }
 
@@ -52,27 +53,15 @@ func runService(db *gorm.DB) error {
 		})
 	})
 
+	appCtx := component.NewAppContext(db)
+
 	// CRUD
 
 	restaurants := r.Group("/restaurants")
 	{
-		restaurants.POST("", ginrestaurant.CreateRestaurant(db))
+		restaurants.POST("", ginrestaurant.CreateRestaurant(appCtx))
 
-		restaurants.GET("", func(ctx *gin.Context) {
-			var restaurants []Restaurant
-
-			if err := db.Find(&restaurants).Error; err != nil {
-				ctx.JSON(http.StatusInternalServerError, gin.H{
-					"message": "Cannot get restaurants",
-				})
-				return
-			}
-
-			ctx.JSON(http.StatusOK, gin.H{
-				"message": "Restaurants retrieved",
-				"data":    restaurants,
-			})
-		})
+		restaurants.GET("", ginrestaurant.ListRestaurant(appCtx))
 
 		restaurants.GET("/:id", func(ctx *gin.Context) {
 			id := ctx.Param("id")
@@ -81,13 +70,13 @@ func runService(db *gorm.DB) error {
 
 			if err := db.First(&restaurant, "id = ?", id).Error; err != nil {
 				ctx.JSON(http.StatusInternalServerError, gin.H{
-					"message": "Cannot get restaurant",
+					"message": "cannot get restaurant",
 				})
 				return
 			}
 
 			ctx.JSON(http.StatusOK, gin.H{
-				"message": "Restaurant retrieved",
+				"message": "restaurant retrieved",
 				"data":    restaurant,
 			})
 		})
@@ -108,13 +97,13 @@ func runService(db *gorm.DB) error {
 
 			if err := db.Where("id = ?", id).Updates(&data).Error; err != nil {
 				ctx.JSON(http.StatusInternalServerError, gin.H{
-					"message": "Cannot update restaurant",
+					"message": "cannot update restaurant",
 				})
 				return
 			}
 
 			ctx.JSON(http.StatusOK, gin.H{
-				"message": "Restaurant updated",
+				"message": "restaurant updated",
 			})
 		})
 
@@ -123,13 +112,13 @@ func runService(db *gorm.DB) error {
 
 			if err := db.Where("id = ?", id).Delete(&Restaurant{}).Error; err != nil {
 				ctx.JSON(http.StatusInternalServerError, gin.H{
-					"message": "Cannot delete restaurant",
+					"message": "cannot delete restaurant",
 				})
 				return
 			}
 
 			ctx.JSON(http.StatusOK, gin.H{
-				"message": "Restaurant deleted",
+				"message": "restaurant deleted",
 			})
 		})
 	}
