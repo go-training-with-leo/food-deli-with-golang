@@ -15,10 +15,11 @@ func CreateRestaurant(appCtx component.AppContext) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var data restaurantmodel.RestaurantCreate
 
-		if err := ctx.ShouldBindJSON(&data); err != nil {
-			ctx.JSON(http.StatusUnauthorized, gin.H{
+		if err := ctx.ShouldBind(&data); err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{
 				"message": err.Error(),
 			})
+
 			return
 		}
 
